@@ -2,8 +2,9 @@ const Todo = require("../models/Todo.js");
 
 const createTodo = async (req, res) => {
   try {
-    const { name, email, content } = req.body;
-    const todo = await Todo.create({ name, email, content });
+    const { content } = req.body;
+    const todo = await Todo.create({ content, userId: req.userId });
+
     return res.status(201).json({
       success: true,
       message: "Todo created successfully",
@@ -20,7 +21,13 @@ const createTodo = async (req, res) => {
 
 const getTodos = async (req, res) => {
   try {
-    const todo = await Todo.find({});
+    const { userId } = req;
+    const todo = await Todo.find({ userId })
+      .populate({
+        path: "userId",
+        select: "name email", // only bring these fields
+      })
+      .lean();
     return res.status(200).json({
       success: true,
       message: "Todo fetched successfully",

@@ -2,16 +2,13 @@ const mongoose = require("mongoose");
 
 const todoSchema = new mongoose.Schema(
   {
-    email: {
-      type: String,
-      required: true,
-    },
     content: {
       type: String,
       required: true,
     },
-    name: {
-      type: String,
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
       required: true,
     },
   },
