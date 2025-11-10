@@ -47,8 +47,8 @@ function Todos({ todos, setSelectedTodo, fetchTodos }) {
           className="flex w-full p-2 border border-black mb-2"
         >
           <div className="w-2/3">
-            <h3>{todo.name}</h3>
-            <p>{todo.email}</p>
+            <h1>{todo.userId.name}</h1>
+            <p>{todo.userId.email}</p>
             <p>{todo.content}</p>
           </div>
           <div className="w-1/3 flex flex-col gap-2 justify-center items-center">

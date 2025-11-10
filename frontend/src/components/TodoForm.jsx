@@ -5,8 +5,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const schema = z.object({
-  name: z.string().nonempty("Name is required").min(3, "At least 3 characters"),
-  email: z.string().nonempty("Email is required").email("Invalid email"),
   content: z
     .string()
     .nonempty("Content is required")
@@ -26,8 +24,6 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
 
   useEffect(() => {
     if (selectedTodo) {
-      setValue("name", selectedTodo.name);
-      setValue("email", selectedTodo.email);
       setValue("content", selectedTodo.content);
     } else {
       reset();
@@ -69,30 +65,6 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
         {selectedTodo ? "Edit Todo" : "Add Todo"}
       </h1>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
-        <input
-          type="text"
-          placeholder="Email..."
-          className="border p-2 mb-2 rounded font-bold"
-          {...register("email")}
-        />
-        {errors.email && (
-          <span className="text-red-900 pb-3 ps-1 text-xs font-bold">
-            {errors.email.message}
-          </span>
-        )}
-
-        <input
-          type="text"
-          placeholder="Name..."
-          className="border p-2 mb-2 rounded font-bold"
-          {...register("name")}
-        />
-        {errors.name && (
-          <span className="text-red-900 pb-3 ps-1 text-xs font-bold">
-            {errors.name.message}
-          </span>
-        )}
-
         <input
           type="text"
           placeholder="Content..."
