@@ -5,14 +5,12 @@ const {
   createUser,
   logInUser,
   getUsers,
+  isAuthenticated,
 } = require("../controller/userController.js");
-const {
-  isAuthenticatedUser,
-} = require("../middlewares/authRequestValidator.js");
 
+router.get("/users", getUsers);
 router.post("/users/signup", createUser);
 router.post("/users/signin", logInUser);
-router.get("/users", getUsers);
-// router.get("/users/authenticate", isAuthenticatedUser);
+router.get("/users/authenticate", isAuthenticated);
 
 module.exports = router;

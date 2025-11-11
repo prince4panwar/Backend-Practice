@@ -107,11 +107,17 @@ function Register() {
           Create Account
         </button>
         <button
-          type="submit"
           onClick={() => navigate("/login")}
           className="bg-blue-500 cursor-pointer font-bold hover:bg-blue-600 text-white p-2 rounded"
         >
           Log In
+        </button>
+
+        <button
+          onClick={() => navigate("/todos")}
+          className="bg-blue-500 cursor-pointer font-bold hover:bg-blue-600 text-white p-2 rounded mt-2"
+        >
+          My Todos
         </button>
       </form>
     </div>

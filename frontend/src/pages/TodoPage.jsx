@@ -26,7 +26,7 @@ function TodoPage() {
   }, []);
 
   return (
-    <div className="flex">
+    <div className="flex gap-4">
       <TodoForm
         selectedTodo={selectedTodo}
         setSelectedTodo={setSelectedTodo}

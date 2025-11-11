@@ -3,6 +3,7 @@ import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useNavigate } from "react-router-dom";
 
 const schema = z.object({
   content: z
@@ -21,6 +22,7 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
   } = useForm({
     resolver: zodResolver(schema),
   });
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (selectedTodo) {
@@ -59,8 +61,13 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
     }
   }
 
+  function onLogout() {
+    localStorage.removeItem("token");
+    navigate("/login");
+  }
+
   return (
-    <div className="flex flex-col align-center p-2 w-1/3">
+    <div className="flex flex-col align-center p-2 w-1/3 bg-blue-100">
       <h1 className="text-3xl font-bold mb-3">
         {selectedTodo ? "Edit Todo" : "Add Todo"}
       </h1>
@@ -86,6 +93,21 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
           }`}
         >
           {selectedTodo ? "Update Todo" : "Add Todo"}
+        </button>
+
+        <button
+          type="submit"
+          className="cursor-pointer font-bold text-white p-2 rounded transition-all 
+              bg-blue-500 hover:bg-blue-600 mt-2"
+          onClick={onLogout}
+        >
+          Log out
+        </button>
+        <button
+          onClick={() => navigate("/")}
+          className="bg-blue-500 cursor-pointer font-bold hover:bg-blue-600 text-white p-2 rounded mt-2"
+        >
+          Create Account
         </button>
       </form>
     </div>
