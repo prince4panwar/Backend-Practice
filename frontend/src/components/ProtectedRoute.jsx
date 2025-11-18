@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { motion } from "motion/react";
 
 const ProtectedRoute = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null); // null = loading
   const [user, setUser] = useState(null);
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -34,7 +36,7 @@ const ProtectedRoute = ({ children }) => {
     };
 
     verifyUser();
-  }, [token]);
+  }, [token, navigate]);
 
   // While checking token validity, show a loader
   if (isAuthenticated === null) {
@@ -50,12 +52,19 @@ const ProtectedRoute = ({ children }) => {
   return (
     <div className="h-screen overflow-hidden">
       <div
-        className="text-3xl font-bold sticky top-0 p-4 flex justify-around bg-blue-500 text-white w-full"
+        className="text-3xl font-bold sticky top-0 p-4 flex justify-center gap-4 bg-blue-500 text-white w-full"
         style={{
           height: "70px",
         }}
       >
         <span className="font-bold"> {user?.name}'s Tasks</span>
+        <motion.button
+          whileTap={{ scale: 0.95 }}
+          className="bg-green-900 hover:bg-green-800 p-2 text-xs font-bold rounded cursor-pointer"
+          onClick={() => navigate("/update/username")}
+        >
+          Update Username
+        </motion.button>
       </div>
       {children}
     </div>

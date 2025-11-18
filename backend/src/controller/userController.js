@@ -36,6 +36,25 @@ const createUser = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name } = req.body;
+    const user = await User.findByIdAndUpdate(id, { name }, { new: true });
+    return res.status(200).json({
+      success: true,
+      message: "User updated successfully",
+      data: user,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Could not update user",
+      error: error,
+    });
+  }
+};
+
 const getUsers = async (req, res) => {
   try {
     const user = await User.find({});
@@ -131,7 +150,7 @@ const isAuthenticated = async (req, res) => {
     }
 
     return res.status(200).json({
-      data: { name: user.name, email: user.email },
+      data: { name: user.name, email: user.email, id: user.id },
       message: "User authenticated successfully",
       success: true,
       err: {},
@@ -147,4 +166,10 @@ const isAuthenticated = async (req, res) => {
   }
 };
 
-module.exports = { createUser, logInUser, getUsers, isAuthenticated };
+module.exports = {
+  createUser,
+  updateUser,
+  logInUser,
+  getUsers,
+  isAuthenticated,
+};
