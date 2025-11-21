@@ -6,6 +6,7 @@ import { z } from "zod";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import { motion } from "motion/react";
+import toast from "react-hot-toast";
 
 const schema = z.object({
   name: z
@@ -48,10 +49,12 @@ function Register() {
         "http://localhost:3000/api/users/signup",
         data
       );
+      toast.success("User created successfully");
       navigate("/login");
       console.log(response.data);
     } catch (error) {
       if (error.response.data.message == "Email is already in use") {
+        toast.error("Email is already in use");
         setError("email", {
           type: "manual",
           message: "Email is already in use",

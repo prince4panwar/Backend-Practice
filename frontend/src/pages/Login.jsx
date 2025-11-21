@@ -6,6 +6,7 @@ import { z } from "zod";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
+import toast from "react-hot-toast";
 
 const schema = z.object({
   email: z
@@ -45,7 +46,6 @@ function Login() {
         data
       );
       console.log(response);
-
       if (response.data.success) {
         localStorage.setItem("token", response.data.data);
         navigate("/todos");
@@ -53,6 +53,7 @@ function Login() {
     } catch (error) {
       console.log(error);
       if (error.response.data.message == "User not found") {
+        toast.error("User not found");
         setError("email", {
           type: "manual",
           message: "Email not found",
@@ -60,6 +61,7 @@ function Login() {
       }
 
       if (error.response.data.message == "Invalid password") {
+        toast.error("Invalid password");
         setError("password", {
           type: "manual",
           message: "Invalid password",

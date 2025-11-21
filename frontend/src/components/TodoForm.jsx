@@ -3,6 +3,7 @@ import axios from "axios";
 import { useFormContext } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
+import toast from "react-hot-toast";
 
 function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
   const {
@@ -35,12 +36,14 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
             },
           }
         );
+        toast.success("Task updated successfully");
       } else {
         await axios.post("http://localhost:3000/api/todos", data, {
           headers: {
             "x-access-token": localStorage.getItem("token"),
           },
         });
+        toast.success("Task created successfully");
       }
 
       // Refresh UI
@@ -54,6 +57,7 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
 
   function onLogout() {
     localStorage.removeItem("token");
+    toast.success("Logged out successfully");
     navigate("/login");
   }
 
