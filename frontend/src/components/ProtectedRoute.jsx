@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const ProtectedRoute = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null); // null = loading
@@ -21,7 +22,7 @@ const ProtectedRoute = ({ children }) => {
             headers: { "x-access-token": token },
           }
         );
-
+        toast.success("Logged in successfully");
         setUser(response.data.data);
         if (response.data.success) {
           setIsAuthenticated(true);
@@ -43,6 +44,7 @@ const ProtectedRoute = ({ children }) => {
 
   // If not authenticated, redirect
   if (!isAuthenticated) {
+    toast.error("Please login first");
     return <Navigate to="/login" replace />;
   }
 

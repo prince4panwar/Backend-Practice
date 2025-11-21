@@ -3,6 +3,7 @@ import axios from "axios";
 import { motion } from "motion/react";
 import "../App.css";
 import { useFormContext } from "react-hook-form";
+import toast from "react-hot-toast";
 
 function Todos({ todos, setSelectedTodo, fetchTodos }) {
   const { reset } = useFormContext();
@@ -14,8 +15,10 @@ function Todos({ todos, setSelectedTodo, fetchTodos }) {
           "x-access-token": localStorage.getItem("token"),
         },
       });
+      toast.success("Task deleted successfully");
       fetchTodos(); // refresh after delete
     } catch (error) {
+      toast.error("Task not deleted successfully");
       console.log(error);
     }
   }
