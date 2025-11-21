@@ -2,8 +2,8 @@ const Todo = require("../models/Todo.js");
 
 const createTodo = async (req, res) => {
   try {
-    const { content } = req.body;
-    const todo = await Todo.create({ content, userId: req.userId });
+    const { content, status } = req.body;
+    const todo = await Todo.create({ content, status, userId: req.userId });
 
     return res.status(201).json({
       success: true,
@@ -81,10 +81,10 @@ const deleteTodo = async (req, res) => {
 const updateTodo = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, email, content } = req.body;
+    const { name, email, content, status } = req.body;
     const todo = await Todo.findByIdAndUpdate(
       id,
-      { name, email, content },
+      { name, email, content, status },
       { new: true }
     );
     return res.status(200).json({

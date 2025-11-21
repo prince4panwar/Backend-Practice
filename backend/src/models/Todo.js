@@ -6,6 +6,11 @@ const todoSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    status: {
+      type: String,
+      enum: ["pending", "completed", "in-progress"],
+      default: "pending",
+    },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

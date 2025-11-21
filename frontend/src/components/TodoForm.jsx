@@ -4,6 +4,14 @@ import { useFormContext } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
 import toast from "react-hot-toast";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
   const {
@@ -11,6 +19,7 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
     handleSubmit,
     reset,
     setValue,
+    watch,
     formState: { errors },
   } = useFormContext();
 
@@ -19,6 +28,7 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
   useEffect(() => {
     if (selectedTodo) {
       setValue("content", selectedTodo.content);
+      setValue("status", selectedTodo.status);
     } else {
       reset();
     }
@@ -88,9 +98,42 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
             </span>
           )}
 
+          <Select
+            value={watch("status")} // bind value
+            onValueChange={(value) => {
+              setValue("status", value, { shouldValidate: true });
+            }} // update RHF
+          >
+            <SelectTrigger className="w-full border border-blue-600 font-bold text-blue-600 focus:outline-none">
+              <SelectValue placeholder="Status" />
+            </SelectTrigger>
+            <SelectContent className="bg-blue-600 text-white">
+              <SelectGroup>
+                <SelectItem
+                  value="pending"
+                  className="hover:bg-blue-100 hover:text-blue-600 cursor-pointer font-bold"
+                >
+                  Pending
+                </SelectItem>
+                <SelectItem
+                  value="completed"
+                  className="hover:bg-blue-100 hover:text-blue-600 cursor-pointer font-bold"
+                >
+                  Completed
+                </SelectItem>
+                <SelectItem
+                  value="in-progress"
+                  className="hover:bg-blue-100 hover:text-blue-600 cursor-pointer font-bold"
+                >
+                  In-Progress
+                </SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+
           <button
             type="submit"
-            className={`cursor-pointer font-bold text-white p-2 rounded transition-all ${
+            className={`cursor-pointer font-bold text-white p-2 rounded transition-all mt-4 ${
               selectedTodo
                 ? "bg-yellow-500 hover:bg-yellow-600"
                 : "bg-blue-500 hover:bg-blue-600"

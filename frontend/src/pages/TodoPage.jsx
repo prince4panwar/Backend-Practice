@@ -11,12 +11,19 @@ const schema = z.object({
     .string()
     .nonempty("Task must be required")
     .min(5, "Task must be at least 5 characters long"),
+  status: z.string(),
 });
 
 function TodoPage() {
   const [todos, setTodos] = useState([]);
   const [selectedTodo, setSelectedTodo] = useState(null);
-  const methods = useForm({ resolver: zodResolver(schema) });
+  const methods = useForm({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      content: "",
+      status: "pending",
+    },
+  });
 
   // Fetch all todos
   async function fetchTodos() {
