@@ -12,6 +12,7 @@ const schema = z.object({
     .nonempty("Task must be required")
     .min(5, "Task must be at least 5 characters long"),
   status: z.string(),
+  image: z.any(),
 });
 
 function TodoPage() {
@@ -22,6 +23,7 @@ function TodoPage() {
     defaultValues: {
       content: "",
       status: "pending",
+      image: "",
     },
   });
 

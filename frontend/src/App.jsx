@@ -7,10 +7,12 @@ import Register from "./pages/Register.jsx";
 import Login from "./pages/Login.jsx";
 import Username from "./pages/Username.jsx";
 import { Toaster } from "react-hot-toast";
+import Todo from "./pages/Todo";
 
 const router = createBrowserRouter([
   { path: "/", Component: Register },
   { path: "/login", Component: Login },
+  { path: "/todos/:userId", Component: Todo },
   {
     path: "/update/username",
     element: (

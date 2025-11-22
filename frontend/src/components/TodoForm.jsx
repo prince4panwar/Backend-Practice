@@ -12,6 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 
 function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
   const {
@@ -35,6 +36,9 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
   }, [selectedTodo, setValue, reset]);
 
   async function onSubmit(data) {
+    if (data.image && data.image[0]) {
+      data.image = data.image[0];
+    }
     try {
       if (selectedTodo) {
         await axios.patch(
@@ -42,6 +46,7 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
           data,
           {
             headers: {
+              "Content-Type": "multipart/form-data",
               "x-access-token": localStorage.getItem("token"),
             },
           }
@@ -50,6 +55,7 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
       } else {
         await axios.post("http://localhost:3000/api/todos", data, {
           headers: {
+            "Content-Type": "multipart/form-data",
             "x-access-token": localStorage.getItem("token"),
           },
         });
@@ -72,13 +78,17 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
   }
 
   return (
-    <div className="flex flex-col align-center p-3 w-1/3 bg-blue-100 mt-3">
+    <div className="flex flex-col align-center p-3 w-1/3 bg-blue-100 mt-1">
       <motion.div
         initial={{ y: 300 }}
         animate={{ y: 0 }}
         transition={{ delay: 0.5 }}
       >
-        <h1 className="text-3xl font-bold mb-3 text-blue-600 text-center">
+        <h1
+          className={`text-3xl font-bold mb-3 text-center ${
+            selectedTodo ? "text-yellow-500" : "text-blue-600"
+          }`}
+        >
           {selectedTodo ? "Edit Task" : "Add Task"}
         </h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
@@ -104,7 +114,7 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
               setValue("status", value, { shouldValidate: true });
             }} // update RHF
           >
-            <SelectTrigger className="w-full border border-blue-600 font-bold text-blue-600 focus:outline-none">
+            <SelectTrigger className="w-full border rounded py-5 border-blue-600 font-bold text-blue-600 focus:outline-none">
               <SelectValue placeholder="Status" />
             </SelectTrigger>
             <SelectContent className="bg-blue-600 text-white">
@@ -131,6 +141,11 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
             </SelectContent>
           </Select>
 
+          <Input
+            type="file"
+            className="text-blue-600 border border-blue-600 mt-2 rounded cursor-pointer"
+            {...register("image")}
+          />
           <button
             type="submit"
             className={`cursor-pointer font-bold text-white p-2 rounded transition-all mt-4 ${

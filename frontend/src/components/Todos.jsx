@@ -5,9 +5,11 @@ import "../App.css";
 import { useFormContext } from "react-hook-form";
 import toast from "react-hot-toast";
 import { Badge } from "@/components/ui/badge";
+import { useNavigate } from "react-router-dom";
 
 function Todos({ todos, setSelectedTodo, fetchTodos }) {
   const { reset } = useFormContext();
+  const navigate = useNavigate();
 
   async function deleteTodo(_id) {
     try {
@@ -43,58 +45,102 @@ function Todos({ todos, setSelectedTodo, fetchTodos }) {
 
   return (
     <div
-      className="w-2/3 overflow-auto mt-3 p-4 pt-1 custom-scroll"
+      className="w-2/3 overflow-auto p-2 pt-0 mt-1 custom-scroll"
       style={{
         height: "calc(100vh - 70px)",
       }}
     >
-      {/* <h1 className="text-3xl font-bold mb-3 sticky top-0 p-4 flex justify-around bg-blue-500 text-white">
-        Todos
-      </h1> */}
+      <div
+        className="z-10 text-md font-bold mb-3 sticky rounded top-0 p-4 flex gap-4 justify-around bg-blue-500 text-white"
+        style={{
+          height: "55px",
+        }}
+      >
+        <span className="w-1/20 text-center">S.No.</span>
+        <span className="w-1/4 text-center">Description</span>
+        <span className="w-1/4 text-center">Status</span>
+        <span className="w-1/4 text-center">Date & Time</span>
+        <span className="w-1/4 text-center">Actions</span>
+      </div>
       {todos.length === 0 && (
         <p className="text-gray-500 text-center w-full mt-5 text-xl font-bold">
           No todos yet.
         </p>
       )}
-      {todos.map((todo, index) => (
-        <motion.div
-          key={todo._id}
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: index * 0.2, type: "spring" }}
-          className="flex items-center w-full gap-4 p-2 mb-2 rounded shadow-[0px_2px_2px_2px_rgba(0,0,0,0.35)]"
-        >
-          <div className="w-2/4">
-            {/* <h1 className="font-bold">{todo.userId.name}</h1> */}
-            {/* <p className="font-semibold">{todo.userId.email}</p> */}
-            <p className="font-bold text-blue-500">
-              {index + 1}. {todo.content}
+      <div className="px-1">
+        {todos.map((todo, index) => (
+          <motion.div
+            key={todo._id}
+            whileHover={{ scale: 1.01 }}
+            whileTap={{ scale: 0.96 }}
+            initial={{ opacity: 0, y: -30 }}
+            animate={{ opacity: 1, y: 0 }}
+            // transition={{ delay: index * 0.2, type: "spring" }}
+            className="flex items-center w-full gap-4 p-2 mb-2 rounded shadow-[0px_2px_2px_2px_rgba(0,0,0,0.35)] cursor-pointer"
+            onClick={() => navigate(`/todos/${todo._id}`)}
+          >
+            <span className="w-1/20 text-center font-bold text-blue-600">
+              {index + 1}.
+            </span>
+            <div className="w-1/4">
+              {/* <h1 className="font-bold">{todo.userId.name}</h1> */}
+              {/* <p className="font-semibold">{todo.userId.email}</p> */}
+              <p className="font-semibold">
+                {todo.content.length > 25
+                  ? todo.content.slice(0, 25) + "..."
+                  : todo.content}
+              </p>
+            </div>
+            <div className="w-1/4 text-center">
+              <Badge
+                className={`${
+                  (todo.status === "pending" && "bg-red-600") ||
+                  (todo.status === "completed" && "bg-green-900") ||
+                  (todo.status === "in-progress" && "bg-yellow-500")
+                } text-white`}
+              >
+                {todo.status.charAt(0).toUpperCase() + todo.status.slice(1)}
+              </Badge>
+            </div>
+            <p className="w-1/4 text-center font-semibold">
+              {/* {new Date(todo.createdAt).toLocaleString()} */}
+              {new Date(todo.createdAt).toLocaleString("en-GB", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+                // second: "2-digit",
+                hour12: false,
+              })}
             </p>
-          </div>
-          <Badge className=" bg-blue-600 text-white">{todo.status}</Badge>
-          <p className="w-2/4 text-center font-semibold">
-            {new Date(todo.createdAt).toLocaleString()}
-          </p>
-          <div className="w-2/4 flex flex-col gap-2 justify-center items-center">
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-5 py-1 w-1/3 bg-green-500 text-white rounded cursor-pointer font-bold"
-              onClick={() => handleEdit(todo._id)}
-            >
-              Edit
-            </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              className="px-5 py-1 w-1/3 bg-red-400 text-white rounded cursor-pointer font-bold"
-              onClick={() => deleteTodo(todo._id)}
-            >
-              Delete
-            </motion.button>
-          </div>
-        </motion.div>
-      ))}
+            <div className="w-1/4 flex flex-col gap-2 justify-center items-center">
+              <motion.button
+                // whileHover={{ scale: 1.1 }}
+                // whileTap={{ scale: 0.95 }}
+                className="px-5 py-1 w-1/2 bg-green-500 hover:bg-green-600 text-white rounded cursor-pointer font-bold"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleEdit(todo._id);
+                }}
+              >
+                Edit
+              </motion.button>
+              <motion.button
+                // whileHover={{ scale: 1.1 }}
+                // whileTap={{ scale: 0.95 }}
+                className="px-5 py-1 w-1/2 bg-red-400 hover:bg-red-500 text-white rounded cursor-pointer font-bold"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  deleteTodo(todo._id);
+                }}
+              >
+                Delete
+              </motion.button>
+            </div>
+          </motion.div>
+        ))}
+      </div>
     </div>
   );
 }

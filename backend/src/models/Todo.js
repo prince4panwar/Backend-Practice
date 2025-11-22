@@ -11,6 +11,9 @@ const todoSchema = new mongoose.Schema(
       enum: ["pending", "completed", "in-progress"],
       default: "pending",
     },
+    image: {
+      type: String,
+    },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
