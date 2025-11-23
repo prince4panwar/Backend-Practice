@@ -6,15 +6,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 const schema = z.object({
   name: z
     .string()
     .nonempty("Name must be required")
     .min(3, "Name must be at least 3 characters or more"),
+  pic: z.any(),
 });
 
-function Username() {
+function Profile() {
   const {
     register,
     handleSubmit,
@@ -34,6 +37,9 @@ function Username() {
   }, [username]);
 
   const onSubmit = (data) => {
+    if (data.pic && data.pic[0]) {
+      data.pic = data.pic[0];
+    }
     setUsername(data);
   };
 
@@ -50,6 +56,7 @@ function Username() {
         username,
         {
           headers: {
+            "Content-Type": "multipart/form-data",
             "x-access-token": localStorage.getItem("token"),
           },
         }
@@ -70,13 +77,16 @@ function Username() {
         className="w-1/3 mt-4"
       >
         <h1 className="text-3xl font-bold mb-3 text-blue-600 text-center">
-          Update Username
+          Update Profile
         </h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
+          <Label htmlFor="picture" className="text-blue-600">
+            Username :{" "}
+          </Label>
           <input
             type="text"
             placeholder="New Username"
-            className={`border border-blue-600 text-blue-600 focus:outline-none p-2 mb-3 rounded font-bold ${
+            className={`border border-blue-600 text-blue-600 focus:outline-none p-2 mb-1 mt-2 rounded font-bold ${
               errors.name
                 ? "border-red-900 focus:ring focus:ring-red-900 text-red-900"
                 : "border-blue-600 focus:ring focus:ring-blue-600"
@@ -89,11 +99,19 @@ function Username() {
             </span>
           )}
 
+          <Label htmlFor="picture" className="text-blue-600 mt-3">
+            Profile Pic :{" "}
+          </Label>
+          <Input
+            type="file"
+            className="text-blue-600 border border-blue-600 mt-2 mb-3 rounded cursor-pointer"
+            {...register("pic")}
+          />
           <button
             type="submit"
             className="cursor-pointer font-bold text-white p-2 rounded transition-all bg-blue-500 hover:bg-blue-600"
           >
-            Update Username
+            Update Profile
           </button>
           <button
             type="button"
@@ -109,4 +127,4 @@ function Username() {
   );
 }
 
-export default Username;
+export default Profile;

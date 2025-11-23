@@ -2,6 +2,7 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
+const { imageUpload } = require("../utils/imageUpload");
 dotenv.config();
 
 const createUser = async (req, res) => {
@@ -21,7 +22,20 @@ const createUser = async (req, res) => {
       password,
       parseInt(process.env.SALT_ROUNDS)
     );
-    const user = await User.create({ name, email, password: hashPassword });
+
+    let picUrl = null;
+    // If user attached an image file, upload to Cloudinary
+    if (req.file) {
+      picUrl = await imageUpload(req.file); // hosted image link
+    }
+
+    const user = await User.create({
+      name,
+      email,
+      password: hashPassword,
+      pic: picUrl,
+    });
+
     return res.status(201).json({
       success: true,
       message: "User created successfully",
@@ -40,7 +54,16 @@ const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
     const { name } = req.body;
-    const user = await User.findByIdAndUpdate(id, { name }, { new: true });
+    let picUrl = null;
+
+    if (req.file) {
+      picUrl = await imageUpload(req.file); // hosted image link
+    }
+
+    const user = picUrl
+      ? await User.findByIdAndUpdate(id, { name, pic: picUrl }, { new: true })
+      : User.findByIdAndUpdate(id, { name }, { new: true });
+
     return res.status(200).json({
       success: true,
       message: "User updated successfully",
@@ -150,7 +173,7 @@ const isAuthenticated = async (req, res) => {
     }
 
     return res.status(200).json({
-      data: { name: user.name, email: user.email, id: user.id },
+      data: { name: user.name, email: user.email, id: user.id, pic: user.pic },
       message: "User authenticated successfully",
       success: true,
       err: {},

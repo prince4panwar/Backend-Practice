@@ -3,6 +3,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { motion } from "motion/react";
 import toast from "react-hot-toast";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const ProtectedRoute = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null); // null = loading
@@ -54,19 +55,24 @@ const ProtectedRoute = ({ children }) => {
   return (
     <div className="h-screen overflow-hidden">
       <div
-        className="text-3xl font-bold sticky top-0 p-4 flex justify-center gap-4 bg-blue-500 text-white w-full"
+        className="text-3xl font-bold sticky top-0 p-4 flex justify-center items-center gap-4 bg-blue-500 text-white w-full"
         style={{
           height: "70px",
         }}
       >
         <span className="font-bold"> {user?.name}'s Tasks</span>
-        <motion.button
+        {/* <motion.button
           whileTap={{ scale: 0.95 }}
           className="bg-green-900 hover:bg-green-800 py-2 px-3 text-xs font-bold rounded cursor-pointer"
           onClick={() => navigate("/update/username")}
         >
           Update Username
-        </motion.button>
+        </motion.button> */}
+
+        <Avatar onClick={() => navigate("/update/username")}>
+          <AvatarImage src={user?.pic} className="cursor-pointer" />
+          <AvatarFallback>O</AvatarFallback>
+        </Avatar>
       </div>
       {children}
     </div>

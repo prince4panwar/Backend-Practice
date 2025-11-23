@@ -1,6 +1,5 @@
-const cloudinary = require("../config/cloudinary.js");
-const streamifier = require("streamifier");
 const Todo = require("../models/Todo.js");
+const { imageUpload } = require("../utils/imageUpload.js");
 
 const createTodo = async (req, res) => {
   try {
@@ -9,21 +8,7 @@ const createTodo = async (req, res) => {
 
     // If user attached an image file, upload to Cloudinary
     if (req.file) {
-      // Wrap Cloudinary stream upload in a Promise
-      const uploadResult = await new Promise((resolve, reject) => {
-        const uploadStream = cloudinary.uploader.upload_stream(
-          { folder: "todos" },
-          (error, result) => {
-            if (error) {
-              return reject(error);
-            }
-            return resolve(result);
-          }
-        );
-        streamifier.createReadStream(req.file.buffer).pipe(uploadStream);
-      });
-
-      imageUrl = uploadResult.secure_url; // hosted image link
+      imageUrl = await imageUpload(req.file); // hosted image link
     }
 
     const todo = await Todo.create({
@@ -112,21 +97,7 @@ const updateTodo = async (req, res) => {
     const { content, status } = req.body;
     let imageUrl = null;
     if (req.file) {
-      // Wrap Cloudinary stream upload in a Promise
-      const uploadResult = await new Promise((resolve, reject) => {
-        const uploadStream = cloudinary.uploader.upload_stream(
-          { folder: "todos" },
-          (error, result) => {
-            if (error) {
-              return reject(error);
-            }
-            return resolve(result);
-          }
-        );
-        streamifier.createReadStream(req.file.buffer).pipe(uploadStream);
-      });
-
-      imageUrl = uploadResult.secure_url; // hosted image link
+      imageUrl = await imageUpload(req.file); // hosted image link
     }
 
     const todo = imageUrl
@@ -136,6 +107,7 @@ const updateTodo = async (req, res) => {
           { new: true }
         )
       : await Todo.findByIdAndUpdate(id, { content, status }, { new: true });
+
     return res.status(200).json({
       success: true,
       message: "Todo updated successfully",

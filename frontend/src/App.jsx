@@ -5,7 +5,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import Register from "./pages/Register.jsx";
 import Login from "./pages/Login.jsx";
-import Username from "./pages/Username.jsx";
+import Profile from "./pages/Profile.jsx";
 import { Toaster } from "react-hot-toast";
 import Todo from "./pages/Todo";
 
@@ -17,7 +17,7 @@ const router = createBrowserRouter([
     path: "/update/username",
     element: (
       <ProtectedRoute>
-        <Username />
+        <Profile />
       </ProtectedRoute>
     ),
   },

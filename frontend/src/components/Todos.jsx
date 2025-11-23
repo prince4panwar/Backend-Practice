@@ -129,7 +129,7 @@ function Todos({ todos, setSelectedTodo, fetchTodos }) {
               <motion.button
                 // whileHover={{ scale: 1.1 }}
                 // whileTap={{ scale: 0.95 }}
-                className="px-5 py-1 w-1/2 bg-red-400 hover:bg-red-500 text-white rounded cursor-pointer font-bold"
+                className="px-5 py-1 w-1/2 bg-red-500 hover:bg-red-700 text-white rounded cursor-pointer font-bold"
                 onClick={(e) => {
                   e.stopPropagation();
                   deleteTodo(todo._id);
