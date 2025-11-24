@@ -8,6 +8,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useUserStore } from "../store/userStore";
 
 const schema = z.object({
   name: z
@@ -18,16 +19,19 @@ const schema = z.object({
 });
 
 function Profile() {
+  const user = useUserStore((state) => state.user);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(schema),
+    defaultValues: {
+      name: user.name,
+    },
   });
   const [username, setUsername] = useState(null);
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
 
   useEffect(() => {
     if (!username) {
@@ -45,14 +49,8 @@ function Profile() {
 
   async function updateUsername(username) {
     try {
-      const response = await axios.get(
-        "http://localhost:3000/api/users/authenticate",
-        {
-          headers: { "x-access-token": token },
-        }
-      );
-      const one = await axios.patch(
-        `http://localhost:3000/api/users/${response.data.data.id}`,
+      const response = await axios.patch(
+        `http://localhost:3000/api/users/${user.id}`,
         username,
         {
           headers: {
@@ -63,7 +61,7 @@ function Profile() {
       );
       toast.success("Username updated successfully");
       navigate("/todos");
-      console.log(one);
+      console.log(response);
     } catch (error) {
       toast.success("Username not updated successfully");
       console.log(error);
@@ -79,9 +77,21 @@ function Profile() {
         <h1 className="text-3xl font-bold mb-3 text-blue-600 text-center">
           Update Profile
         </h1>
+        <div className="w-full flex items-center justify-center">
+          <img
+            src={
+              user.pic ??
+              "https://res.cloudinary.com/dsaiclywa/image/upload/v1763988872/user_qe0ygk.png"
+            }
+            alt="Profile Pic"
+            height={50}
+            width={200}
+            className="rounded-3xl mb-4"
+          />
+        </div>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
           <Label htmlFor="picture" className="text-blue-600">
-            Username :{" "}
+            Username :
           </Label>
           <input
             type="text"
@@ -100,7 +110,7 @@ function Profile() {
           )}
 
           <Label htmlFor="picture" className="text-blue-600 mt-3">
-            Profile Pic :{" "}
+            Profile Pic :
           </Label>
           <Input
             type="file"

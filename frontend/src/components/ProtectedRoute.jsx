@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { motion } from "motion/react";
 import toast from "react-hot-toast";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useUserStore } from "../store/userStore";
 
 const ProtectedRoute = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null); // null = loading
-  const [user, setUser] = useState(null);
+  const user = useUserStore((state) => state.user);
+  const addUser = useUserStore((state) => state.addUser);
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
@@ -25,8 +26,8 @@ const ProtectedRoute = ({ children }) => {
             headers: { "x-access-token": token },
           }
         );
-        // toast.success("Logged in successfully");
-        setUser(response.data.data);
+        addUser(response.data.data);
+
         if (response.data.success) {
           setIsAuthenticated(true);
         } else {
@@ -42,7 +43,9 @@ const ProtectedRoute = ({ children }) => {
 
   // While checking token validity, show a loader
   if (isAuthenticated === null) {
-    return <div className="bg-blue-400 text-center text-white">Loading...</div>;
+    return (
+      <div className="bg-blue-400 text-center text-white">Loading Tasks...</div>
+    );
   }
 
   // If not authenticated, redirect
@@ -61,17 +64,15 @@ const ProtectedRoute = ({ children }) => {
         }}
       >
         <span className="font-bold"> {user?.name}'s Tasks</span>
-        {/* <motion.button
-          whileTap={{ scale: 0.95 }}
-          className="bg-green-900 hover:bg-green-800 py-2 px-3 text-xs font-bold rounded cursor-pointer"
-          onClick={() => navigate("/update/username")}
-        >
-          Update Username
-        </motion.button> */}
-
         <Avatar onClick={() => navigate("/update/username")}>
           <AvatarImage src={user?.pic} className="cursor-pointer" />
-          <AvatarFallback>O</AvatarFallback>
+          <AvatarFallback>
+            <img
+              src="https://res.cloudinary.com/dsaiclywa/image/upload/v1763988872/user_qe0ygk.png"
+              alt="profile image"
+              className="cursor-pointer"
+            />
+          </AvatarFallback>
         </Avatar>
       </div>
       {children}

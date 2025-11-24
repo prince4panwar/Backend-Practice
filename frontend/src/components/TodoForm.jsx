@@ -13,6 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
+import { useUserStore } from "@/store/userStore";
 
 function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
   const {
@@ -23,7 +24,7 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
     watch,
     formState: { errors },
   } = useFormContext();
-
+  const deleteUser = useUserStore((state) => state.deleteUser);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -72,9 +73,12 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
   }
 
   function onLogout() {
-    localStorage.removeItem("token");
-    toast.success("Logged out successfully");
+    deleteUser();
     navigate("/login");
+    toast.success("Logged out successfully");
+    setTimeout(() => {
+      localStorage.removeItem("token");
+    }, 1);
   }
 
   return (
@@ -160,7 +164,7 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
             type="button"
             className="cursor-pointer font-bold text-white p-2 rounded transition-all 
               bg-blue-500 hover:bg-blue-600 mt-2"
-            onClick={onLogout}
+            onClick={() => onLogout()}
           >
             Log out
           </button>

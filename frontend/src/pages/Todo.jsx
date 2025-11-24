@@ -27,7 +27,6 @@ function Todo() {
       console.log(error);
     }
   }
-  console.log("todo", todo);
   return (
     <div className="h-screen overflow-auto">
       <div

@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import React from "react";
 import { motion } from "motion/react";
 import toast from "react-hot-toast";
+import { Input } from "@/components/ui/input";
 
 const schema = z.object({
   name: z
@@ -21,6 +22,7 @@ const schema = z.object({
     .string()
     .nonempty("Password must be required")
     .min(8, "Password must be at least 8 characters long"),
+  pic: z.any(),
 });
 
 function Register() {
@@ -64,6 +66,9 @@ function Register() {
     }
   }
   const onSubmit = (data) => {
+    if (data.pic && data.pic[0]) {
+      data.pic = data.pic[0];
+    }
     setData(data);
   };
 
@@ -137,6 +142,12 @@ function Register() {
                 {errors.password.message}
               </span>
             )}
+
+            <Input
+              type="file"
+              className="text-blue-600 border border-blue-600 mb-3 rounded cursor-pointer"
+              {...register("pic")}
+            />
             <button
               type="submit"
               className="bg-blue-500 cursor-pointer font-bold hover:bg-blue-600 text-white p-2 rounded mb-2 mt-3"

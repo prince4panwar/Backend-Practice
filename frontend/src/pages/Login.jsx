@@ -7,6 +7,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
 import toast from "react-hot-toast";
+import { useUserStore } from "@/store/userStore";
 
 const schema = z.object({
   email: z
@@ -21,6 +22,7 @@ const schema = z.object({
 
 function Login() {
   const [data, setData] = useState(null);
+  const user = useUserStore((state) => state.user);
   const navigate = useNavigate();
 
   const {
@@ -53,7 +55,7 @@ function Login() {
     } catch (error) {
       console.log(error);
       if (error.response.data.message == "User not found") {
-        toast.error("User not found");
+        toast.error("Please create account");
         setError("email", {
           type: "manual",
           message: "Email not found",
