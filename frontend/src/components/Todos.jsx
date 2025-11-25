@@ -83,9 +83,7 @@ function Todos({ todos, setSelectedTodo, fetchTodos }) {
               {index + 1}.
             </span>
             <div className="w-1/4">
-              {/* <h1 className="font-bold">{todo.userId.name}</h1> */}
-              {/* <p className="font-semibold">{todo.userId.email}</p> */}
-              <p className="font-semibold">
+              <p className="text-center font-semibold">
                 {todo.content.length > 25
                   ? todo.content.slice(0, 25) + "..."
                   : todo.content}
@@ -116,8 +114,6 @@ function Todos({ todos, setSelectedTodo, fetchTodos }) {
             </p>
             <div className="w-1/4 flex flex-col gap-2 justify-center items-center">
               <motion.button
-                // whileHover={{ scale: 1.1 }}
-                // whileTap={{ scale: 0.95 }}
                 className="px-5 py-1 w-1/2 bg-green-500 hover:bg-green-600 text-white rounded cursor-pointer font-bold"
                 onClick={(e) => {
                   e.stopPropagation();
@@ -127,8 +123,6 @@ function Todos({ todos, setSelectedTodo, fetchTodos }) {
                 Edit
               </motion.button>
               <motion.button
-                // whileHover={{ scale: 1.1 }}
-                // whileTap={{ scale: 0.95 }}
                 className="px-5 py-1 w-1/2 bg-red-500 hover:bg-red-700 text-white rounded cursor-pointer font-bold"
                 onClick={(e) => {
                   e.stopPropagation();

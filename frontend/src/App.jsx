@@ -12,7 +12,14 @@ import Todo from "./pages/Todo";
 const router = createBrowserRouter([
   { path: "/", Component: Register },
   { path: "/login", Component: Login },
-  { path: "/todos/:userId", Component: Todo },
+  {
+    path: "/todos/:userId",
+    element: (
+      <ProtectedRoute>
+        <Todo />
+      </ProtectedRoute>
+    ),
+  },
   {
     path: "/update/username",
     element: (

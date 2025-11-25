@@ -160,14 +160,14 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
           >
             {selectedTodo ? "Update Task" : "Add Task"}
           </button>
-          <button
+          {/* <button
             type="button"
             className="cursor-pointer font-bold text-white p-2 rounded transition-all 
               bg-blue-500 hover:bg-blue-600 mt-2"
             onClick={() => onLogout()}
           >
             Log out
-          </button>
+          </button> */}
           <button
             type="button"
             onClick={() => navigate("/")}
