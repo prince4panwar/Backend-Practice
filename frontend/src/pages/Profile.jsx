@@ -30,28 +30,28 @@ function Profile() {
       name: user.name,
     },
   });
-  const [username, setUsername] = useState(null);
+  const [profile, setProfile] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!username) {
+    if (!profile) {
       return;
     }
-    updateUsername(username);
-  }, [username]);
+    updateProfile(profile);
+  }, [profile]);
 
   const onSubmit = (data) => {
     if (data.pic && data.pic[0]) {
       data.pic = data.pic[0];
     }
-    setUsername(data);
+    setProfile(data);
   };
 
-  async function updateUsername(username) {
+  async function updateProfile(profile) {
     try {
       const response = await axios.patch(
         `http://localhost:3000/api/users/${user.id}`,
-        username,
+        profile,
         {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -59,11 +59,11 @@ function Profile() {
           },
         }
       );
-      toast.success("Username updated successfully");
+      toast.success("Profile updated successfully");
       navigate("/todos");
       console.log(response);
     } catch (error) {
-      toast.success("Username not updated successfully");
+      toast.success("Profile not updated successfully");
       console.log(error);
     }
   }
