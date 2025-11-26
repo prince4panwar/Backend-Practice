@@ -74,10 +74,15 @@ const ProtectedRoute = ({ children }) => {
           height: "70px",
         }}
       >
-        <div className="w-1/2 flex justify-end">
-          <span className="font-bold"> {user?.name}'s Tasks</span>
+        <div className="w-1/3 flex justify-start hover:underline">
+          <Link className="text-lg" onClick={() => navigate("/todos")}>
+            Taskify
+          </Link>
         </div>
-        <div className="w-1/2 flex justify-end items-center gap-4">
+        <div className="w-1/3 flex justify-center">
+          <span className="font-bold text-2xl">Welcome {user?.name}</span>
+        </div>
+        <div className="w-1/3 flex justify-end items-center gap-4">
           <Avatar
             onClick={() => navigate("/update/username")}
             className="w-10 h-10"

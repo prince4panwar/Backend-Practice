@@ -8,6 +8,7 @@ import Login from "./pages/Login.jsx";
 import Profile from "./pages/Profile.jsx";
 import { Toaster } from "react-hot-toast";
 import Todo from "./pages/Todo";
+import TodoStatusPieChart from "./pages/TodoStatusPieChart";
 
 const router = createBrowserRouter([
   { path: "/", Component: Register },
@@ -33,6 +34,14 @@ const router = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <TodoPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/todos/status/summary",
+    element: (
+      <ProtectedRoute>
+        <TodoStatusPieChart />
       </ProtectedRoute>
     ),
   },

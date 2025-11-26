@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { motion } from "motion/react";
+import { MoveLeft } from "lucide-react";
 
 function Todo() {
   const { userId } = useParams();
@@ -28,35 +29,39 @@ function Todo() {
     }
   }
   return (
-    <div className="h-screen overflow-auto custom-scroll">
-      <div className="px-4 py-6">
-        <p className="font-bold rounded-xl bg-blue-200 mb-6 p-4">
-          {todo?.content}
-        </p>
-        <div className="flex items-start gap-8 mb-6">
-          {todo?.image && <img src={todo?.image} alt="image" width={300} />}
-          <div>
-            <p className="font-bold text-blue-600 pb-2">
-              {todo?.status.charAt(0).toUpperCase() + todo?.status.slice(1)}
-            </p>
-            <p className="font-bold text-blue-600 pb-2">
-              {new Date(todo?.createdAt).toLocaleString("en-GB", {
-                day: "2-digit",
-                month: "short",
-                year: "numeric",
-                hour: "2-digit",
-                minute: "2-digit",
-                hour12: true,
-              })}
-            </p>
-            <motion.button
-              whileTap={{ scale: 0.95 }}
-              className="bg-green-900 hover:bg-green-800 text-white py-2 px-4 text-md font-bold rounded cursor-pointer"
-              onClick={() => navigate("/todos")}
-            >
-              My Tasks
-            </motion.button>
-          </div>
+    <div className="flex gap-4 px-4 py-6">
+      <p
+        className="font-bold rounded-xl bg-blue-200 p-4 overflow-auto custom-scroll w-2/3"
+        style={{ "max-height": "80vh" }}
+      >
+        {todo?.content}
+      </p>
+      <div className="flex flex-col items-start gap-8 p-4 rounded-xl w-1/3 bg-slate-300">
+        {todo?.image && <img src={todo?.image} alt="image" width={300} />}
+        <div>
+          <p className="font-bold text-blue-600 pb-2">
+            {todo?.status.charAt(0).toUpperCase() + todo?.status.slice(1)}
+          </p>
+          <p className="font-bold text-blue-600 pb-2">
+            {new Date(todo?.createdAt).toLocaleString("en-GB", {
+              day: "2-digit",
+              month: "short",
+              year: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: true,
+            })}
+          </p>
+          <motion.button
+            whileTap={{ scale: 0.8 }}
+            type="button"
+            className="group flex items-center gap-1 cursor-pointer font-bold text-white py-2 px-4 rounded transition-all
+             bg-blue-500 hover:bg-blue-600 mt-2"
+            onClick={() => navigate("/todos")}
+          >
+            <MoveLeft className="transition-all duration-300 group-hover:-translate-x-2" />
+            My Tasks
+          </motion.button>
         </div>
       </div>
     </div>

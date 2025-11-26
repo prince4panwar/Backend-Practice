@@ -160,20 +160,13 @@ function TodoForm({ selectedTodo, setSelectedTodo, fetchTodos }) {
           >
             {selectedTodo ? "Update Task" : "Add Task"}
           </button>
-          {/* <button
+          <button
             type="button"
             className="cursor-pointer font-bold text-white p-2 rounded transition-all 
               bg-blue-500 hover:bg-blue-600 mt-2"
-            onClick={() => onLogout()}
+            onClick={() => navigate("/todos/status/summary")}
           >
-            Log out
-          </button> */}
-          <button
-            type="button"
-            onClick={() => navigate("/")}
-            className="bg-blue-500 cursor-pointer font-bold hover:bg-blue-600 text-white p-2 rounded mt-2"
-          >
-            Create Account
+            Tasks Summary
           </button>
         </form>
       </motion.div>

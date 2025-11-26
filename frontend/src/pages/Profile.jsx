@@ -74,9 +74,9 @@ function Profile() {
         animate={{ y: 0 }}
         className="w-1/3 mt-4"
       >
-        <h1 className="text-3xl font-bold mb-3 text-blue-600 text-center">
+        {/* <h1 className="text-3xl font-bold mb-3 text-blue-600 text-center">
           Update Profile
-        </h1>
+        </h1> */}
         <div className="w-full flex items-center justify-center">
           <img
             src={
@@ -121,7 +121,14 @@ function Profile() {
             type="submit"
             className="cursor-pointer font-bold text-white p-2 rounded transition-all bg-blue-500 hover:bg-blue-600"
           >
-            Update Profile
+            Update Account
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate("/")}
+            className="bg-blue-500 cursor-pointer font-bold hover:bg-blue-600 text-white p-2 rounded mt-2"
+          >
+            Create Account
           </button>
           <button
             type="button"
