@@ -2,7 +2,11 @@ const mongoose = require("mongoose");
 
 const todoSchema = new mongoose.Schema(
   {
-    content: {
+    title: {
+      type: String,
+      required: true,
+    },
+    description: {
       type: String,
       required: true,
     },

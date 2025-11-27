@@ -4,7 +4,7 @@ const { imageUpload } = require("../utils/imageUpload.js");
 
 const createTodo = async (req, res) => {
   try {
-    const { content, status } = req.body;
+    const { title, description, status } = req.body;
     let imageUrl = null;
 
     // If user attached an image file, upload to Cloudinary
@@ -13,7 +13,8 @@ const createTodo = async (req, res) => {
     }
 
     const todo = await Todo.create({
-      content,
+      title,
+      description,
       status,
       userId: req.userId,
       image: imageUrl,
@@ -95,7 +96,7 @@ const deleteTodo = async (req, res) => {
 const updateTodo = async (req, res) => {
   try {
     const { id } = req.params;
-    const { content, status } = req.body;
+    const { title, description, status } = req.body;
     let imageUrl = null;
     if (req.file) {
       imageUrl = await imageUpload(req.file); // hosted image link
@@ -104,10 +105,14 @@ const updateTodo = async (req, res) => {
     const todo = imageUrl
       ? await Todo.findByIdAndUpdate(
           id,
-          { content, status, image: imageUrl },
+          { title, description, status, image: imageUrl },
           { new: true }
         )
-      : await Todo.findByIdAndUpdate(id, { content, status }, { new: true });
+      : await Todo.findByIdAndUpdate(
+          id,
+          { title, description, status },
+          { new: true }
+        );
 
     return res.status(200).json({
       success: true,
