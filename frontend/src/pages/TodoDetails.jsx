@@ -5,6 +5,7 @@ import { MoveLeft } from "lucide-react";
 import { useThemeStore } from "@/store/themeStore";
 import EditTodoDialog from "@/components/EditTodoDialog";
 import { useTodoStore } from "@/store/todoStore";
+import DeleteTodoDialog from "@/components/DeleteTodoDialog";
 
 function TodoDetails() {
   const { userId } = useParams();
@@ -59,7 +60,7 @@ function TodoDetails() {
         </div>
       </div>
       <div
-        className={`flex flex-col items-start gap-8 p-4 rounded-xl w-1/3 bg-slate-300 ${
+        className={`flex flex-col items-start gap-8 p-4 rounded-xl w-1/3 bg-blue-200 ${
           theme === "light" ? "light" : "dark"
         }`}
         style={{ "max-height": "85vh" }}
@@ -87,7 +88,7 @@ function TodoDetails() {
               hour12: true,
             })}
           </p>
-          <div className="flex gap-3">
+          <div className="flex gap-3 mt-4">
             <button
               type="button"
               className="group flex items-center gap-1 cursor-pointer font-semibold text-white py-2 px-4 rounded transition-all
@@ -98,6 +99,7 @@ function TodoDetails() {
               My Tasks
             </button>
             <EditTodoDialog setIsEdit={setIsEdit} />
+            <DeleteTodoDialog />
           </div>
         </div>
       </div>

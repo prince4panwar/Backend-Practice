@@ -104,7 +104,9 @@ const ProtectedRoute = ({ children }) => {
             </AvatarFallback>
           </Avatar>
           <button
-            className="group cursor-pointer hover:underline transition-all p-1 hover:bg-slate-700 rounded-full"
+            className={`group cursor-pointer hover:underline transition-all p-1 rounded-full ${
+              theme === "light" ? "hover:bg-yellow-400" : "hover:bg-slate-600"
+            }`}
             onClick={toggleTheme}
           >
             {theme === "light" ? (
